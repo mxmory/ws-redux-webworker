@@ -1,12 +1,14 @@
-import { getMessages, getBlockingMessages } from "./index";
+import { getMessages, getBlockingMessages } from "../index";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import style from "./App.module.css";
 
 function App() {
   const value = useSelector((state) => state.values.value);
   const [rand, setRand] = useState(0);
 
   useEffect(() => {
+    // This is to visualize ui repaint process;
     const interval = setInterval(() => {
       const randVal = Math.floor(Math.random() * (255 - 10 + 1) + 10);
       setRand(randVal);
@@ -17,32 +19,30 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className={style.appWrapper}>
       <div>
-        press button to get queued messages from ws:
-        <div style={{ border: "1px solid", padding: "1em" }}>
+        <h1>Press button to get queued messages from ws:</h1>
+        <div className={style.buttons}>
           <button onClick={getMessages}>Workerized</button>
-        </div>
-        <br />
-        <div style={{ border: "1px solid red", padding: "1em" }}>
           <button onClick={getBlockingMessages}>Blocking</button>
         </div>
-        <hr />
-        <h1>Redux store value: {value}</h1>
-        <hr />
+
+        <div className={style.valueWrapper}>
+          <h1>Redux store value: {value}</h1>
+        </div>
+
         <div>
           <h2>Example of UI thread blocking behaviour:</h2>
           <div
+            className={style.uiWrapper}
             // just random sh#t
             style={{
-              transition: "0.2s ease",
-              padding: "2em",
               background: `rgba(${rand}, ${Math.abs(rand - 128)}, ${Math.abs(
                 rand - 255
               )})`,
             }}
           >
-            random changing value: {rand}
+            <h3>random changing value: {rand}</h3>
           </div>
         </div>
       </div>

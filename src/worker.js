@@ -1,3 +1,3 @@
 import { fibonacci } from "./helpers";
 
-export { fibonacci };
+export const fibonacciWorkerized = (value) => fibonacci(value);

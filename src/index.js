@@ -1,40 +1,42 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App.jsx";
+import App from "./components/App.jsx";
 import Notification from "rc-notification";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
 import { changed } from "./features/valueSetter/valueSetterSlice";
 import worker from "workerize-loader!./worker"; // eslint-disable-line import/no-webpack-loader-syntax
 import { fibonacci } from "./helpers.js";
-import "./index.css";
 import "rc-notification/assets/index.css";
 
 const workerInstance = worker();
 
 const ws = new WebSocket("ws://localhost:9000");
-
 ws.onopen = () => console.log("opened WS");
-
 ws.onmessage = (e) => handleMessage(e);
 
+// This is an example of handling message and some kind of calc expensive operation (fibonacci just for example)
+//
+// WITH worker
 const setValue = () => {
-  console.log("test");
-  const rand = Math.floor(Math.random() * 40);
+  const rand = Math.floor(Math.random() * 30 + 20);
   workerInstance
-    .fibonacci(rand)
+    .fibonacciWorkerized(rand)
     .then((value) => store.dispatch(changed(value)));
 };
-
+//
+// WITHOUT worker
 const setBlockingValue = () => {
-  const rand = Math.floor(Math.random() * 40);
-  const res = fibonacci(rand);
+  const rand = Math.floor(Math.random() * 30 + 20);
+  const res = fibonacci(rand); // imagine expensive operation with redux action payload ;)
   store.dispatch(changed(res));
 };
+//
 
 export const handleMessage = (e) => {
   const data = JSON.parse(e.data);
   const { type } = data;
+
   switch (type) {
     case "info":
       Notification.newInstance({}, (notification) => {
@@ -61,8 +63,6 @@ export const getMessages = () => {
 export const getBlockingMessages = () => {
   ws.send(JSON.stringify({ type: "get_queued_messages_blocking" }));
 };
-
-// Run your calculations
 
 ReactDOM.render(
   <React.StrictMode>
