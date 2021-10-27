@@ -23,8 +23,8 @@ function App() {
       <div>
         <h1>Press button to get queued messages from ws:</h1>
         <div className={style.buttons}>
-          <button onClick={getMessages}>Workerized</button>
-          <button onClick={getBlockingMessages}>Blocking</button>
+          <button className={style.button} onClick={getMessages}>Workerized</button>
+          <button className={style.button} onClick={getBlockingMessages}>Blocking</button>
         </div>
 
         <div className={style.valueWrapper}>
@@ -43,6 +43,7 @@ function App() {
             }}
           >
             <h3>random changing value: {rand}</h3>
+            <input className={style.input} type="text" placeholder="Try to type here..." />
           </div>
         </div>
       </div>

@@ -1,13 +1,25 @@
 .buttons button {
-  margin-right: 20px;
+    margin-right: 20px;
 }
 
 .uiWrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2em;
-  border-radius: 10px;
-  transition: 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2em;
+    border-radius: 10px;
+    transition: 0.2s ease;
+}
+
+.input {
+    height: 80px;
+    font-size: 32px;
+    border: 4px solid #fff;
+}
+
+.button {
+    cursor: pointer;
+    height: 50px;
+    font-size: 24px;
 }
