@@ -37,14 +37,14 @@ export const handleMessage = (e) => {
 
   switch (type) {
     case "info":
-      Notification.newInstance({}, (notification) => {
+      Notification.newInstance({style: {'top': 10, 'right': 10}}, (notification) => {
         notification.notice({
           content: data.message,
         });
       });
       break;
     case "set_value":
-      console.log('New WS Message: ', data.value)
+      console.log('New WS message: ', data.value)
       setValue(data);
       break;
     case "set_value_blocking":
