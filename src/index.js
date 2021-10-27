@@ -18,17 +18,15 @@ ws.onmessage = (e) => handleMessage(e);
 // This is an example of handling message and some kind of calc expensive operation (fibonacci just for example)
 //
 // WITH worker
-const setValue = () => {
-  const rand = Math.floor(Math.random() * 30 + 20);
+const setValue = ({ value }) => {
   workerInstance
-    .fibonacciWorkerized(rand)
-    .then((value) => store.dispatch(changed(value)));
+    .fibonacciWorkerized(value)
+    .then((res) => store.dispatch(changed(res)));
 };
 //
 // WITHOUT worker
-const setBlockingValue = () => {
-  const rand = Math.floor(Math.random() * 30 + 20);
-  const res = fibonacci(rand); // imagine expensive operation with redux action payload ;)
+const setBlockingValue = ({ value }) => {
+  const res = fibonacci(value); // imagine expensive operation with redux action payload ;)
   store.dispatch(changed(res));
 };
 //
@@ -46,10 +44,11 @@ export const handleMessage = (e) => {
       });
       break;
     case "set_value":
-      setValue();
+      console.log('New WS Message: ', data.value)
+      setValue(data);
       break;
     case "set_value_blocking":
-      setBlockingValue();
+      setBlockingValue(data);
       break;
     default:
       break;
